@@ -1,4 +1,4 @@
-package eu.flashsoft.automatic_data_disconnect.ui.notifications
+package eu.flashsoft.automatic_data_disconnect.ui.about
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

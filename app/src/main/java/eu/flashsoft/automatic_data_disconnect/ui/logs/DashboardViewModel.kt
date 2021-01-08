@@ -1,4 +1,4 @@
-package eu.flashsoft.automatic_data_disconnect.ui.dashboard
+package eu.flashsoft.automatic_data_disconnect.ui.logs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

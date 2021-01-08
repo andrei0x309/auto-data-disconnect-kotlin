@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Automatic Data Disconnect</string>
+    <string name="app_name">[ROOT] Automatic Data Disconnect</string>
     <string name="title_home">Control</string>
     <string name="title_dashboard">Logs</string>
     <string name="title_notifications">About</string>
@@ -8,4 +8,31 @@
     <string name="title_activity_re_launch">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="test_logs">lorem lorem
+    lorem lorem
+        lorem lorem
+        lorem lorem
+        lorem lorem
+        lorem lorem
+        lorem lorem
+        lorem lorem
+        lorem lorem
+        lorem lorem
+    lorem lorem
+                lorem lorem
+    lorem lorem
+                lorem lorem
+    lorem lorem
+                lorem lorem
+    lorem lorem
+                lorem lorem
+    lorem lorem        lorem lorem
+    lorem lorem
+        \n\n
+                lorem lorem
+    lorem lorem
+                lorem lorem
+    lorem lorem
+
+    </string>
 </resources>

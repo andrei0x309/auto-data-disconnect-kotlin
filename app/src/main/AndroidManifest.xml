@@ -13,11 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AutomaticDataDisconnect">
-        <activity
-            android:name=".ReLaunchActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_re_launch"
-            android:theme="@style/Theme.AutomaticDataDisconnect.Fullscreen"></activity>
 
         <service
             android:name=".DisconnectStickyService"
