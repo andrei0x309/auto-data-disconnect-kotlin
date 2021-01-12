@@ -5,105 +5,124 @@
     android:id="@+id/frHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment"><![CDATA[
-
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ]]>
+    tools:context=".ui.home.HomeFragment">
 
     <Switch
-        android:id="@+id/serviceSwicth"
-        android:layout_width="267dp"
+        android:id="@+id/appSwitch"
+        android:layout_width="180dp"
         android:layout_height="0dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="24dp"
-        android:text="Enable Service"
+        android:layout_marginTop="40dp"
+        android:text="@string/enable_app"
         android:textAlignment="textEnd"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@id/whyRootTxt"
         tools:checked="true" />
 
     <Switch
         android:id="@+id/logsSwitch"
-        android:layout_width="267dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="92dp"
-        android:text="Enable Logs"
+        android:layout_width="180dp"
+        android:layout_height="33dp"
+        android:text="@string/enable_logs"
         android:textAlignment="textEnd"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/appSwitch"
         tools:checked="true" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="411dp"
+        android:layout_width="311dp"
         android:layout_height="38dp"
-        android:layout_marginTop="176dp"
-        android:text="Disconect Data Connection"
+        android:text="@string/disconnect_data_connection"
+        android:layout_marginTop="40dp"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/logsSwitch" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="77dp"
         android:layout_height="35dp"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="212dp"
-        android:text="After:"
+        android:layout_marginTop="5dp"
+        android:text="@string/after"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/timerMinTextEdit"
         android:layout_width="91dp"
         android:layout_height="50dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="256dp"
         android:ems="10"
-        android:hint="minutes"
+        android:hint="@string/minutes"
         android:importantForAutofill="no"
         android:inputType="number"
-        android:text="30"
         android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:imeOptions="actionDone" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="264dp"
-        android:text="minutes"
+        android:layout_width="90dp"
+        android:layout_height="32dp"
+        android:text="@string/minutes"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <Button
+        android:id="@+id/grantRootBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/grant_root_rights"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <TextView
+        android:id="@+id/whyRootTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_why_root"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/appSwitch"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@id/grantRootBtn"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

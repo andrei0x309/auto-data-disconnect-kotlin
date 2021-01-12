@@ -3,13 +3,18 @@ package eu.flashsoft.automatic_data_disconnect
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 
 class BootStartReceiver : BroadcastReceiver() {
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onReceive(context: Context, intent: Intent) {
-        // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-        Log.d("----test", "br invoked")
-        DisconnectStickyService.selfStart(context)
+
+        val sharedPrefs = context.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
+        val boolAppEnabled = sharedPrefs.getBoolean("enableApp", false)
+        if(boolAppEnabled) MainActivity.startApp(context)
+
     }
 }
