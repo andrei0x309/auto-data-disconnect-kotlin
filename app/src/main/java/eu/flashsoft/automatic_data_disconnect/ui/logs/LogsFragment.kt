@@ -4,9 +4,7 @@ package eu.flashsoft.automatic_data_disconnect.ui.logs
 import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,11 +106,6 @@ class LogsFragment : Fragment() {
         logTxtBox.isGone = true
     }
 
-    private fun showLogs(){
-        clearLogsBtn.isGone  = false
-        logTxtBox.isGone = false
-    }
-
 
     @SuppressLint("SetTextI18n")
     private fun checkLogs(){
@@ -131,9 +124,6 @@ class LogsFragment : Fragment() {
         val file = File(activity?.applicationContext?.filesDir, filename)
 
         val contents = file.readText() // Read file
-
-        Log.d("--- logs text", "logs.txt contents")
-        Log.d("--- logs text", contents)
 
         if(contents == ""){
             errorLogsTxt.text = ""
@@ -159,11 +149,11 @@ class LogsFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_logs, container, false)
         logTxtBox = root.findViewById(R.id.logTextView)
         clearLogsBtn = root.findViewById(R.id.clearLogsBtn)
-        logsProgressBar = root.findViewById(R.id.logsProgressBar)
+        logsProgressBar = root.findViewById(R.id.aboutProgressBar)
         errorLogsTxt  = root.findViewById(R.id.logsErrorTxt)
         errorImg  = root.findViewById(R.id.imageView)
 
-        logsProgressBar.isIndeterminate = true;
+        logsProgressBar.isIndeterminate = true
         logsProgressBar.indeterminateDrawable.colorFilter = PorterDuffColorFilter( getColor(resources, R.color.black_overlay ,activity?.theme ), PorterDuff.Mode.MULTIPLY)
 
         val file = File(activity?.applicationContext?.filesDir, "logs.txt")
@@ -172,7 +162,7 @@ class LogsFragment : Fragment() {
 
         asyncPruneLogs()
 
-        clearLogsBtn.setOnClickListener  { it ->
+        clearLogsBtn.setOnClickListener  {
             it.isEnabled = false
             it.isClickable = false
             asyncClearLogs()

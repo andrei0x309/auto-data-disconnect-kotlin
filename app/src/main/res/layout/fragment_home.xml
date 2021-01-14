@@ -5,9 +5,10 @@
     android:id="@+id/frHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
     tools:context=".ui.home.HomeFragment">
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/appSwitch"
         android:layout_width="180dp"
         android:layout_height="0dp"
@@ -20,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@id/whyRootTxt"
         tools:checked="true" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/logsSwitch"
         android:layout_width="180dp"
         android:layout_height="33dp"

@@ -9,35 +9,41 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.*
+import androidx.work.WorkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.IOException
 
 
-
-
-
 class MainActivity : AppCompatActivity() {
 
-    lateinit var swAppEnable:Switch
-    lateinit var swLogs:Switch
+    //On Create
+
+    // Home Fragment
+    lateinit var swAppEnable:SwitchCompat
+    lateinit var swLogs: SwitchCompat
     lateinit var timerMinTextEdit:EditText
     lateinit var grantRootBtn: Button
 
 
 
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    @RequiresApi(Build.VERSION_CODES.M)
     fun homeFragmentLoaded(){
 
 
@@ -56,24 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPrefs = getSharedPreferences("app_settings", MODE_PRIVATE)
         var ed: Editor
-        if (!sharedPrefs.contains("initialized")) {
-            ed = sharedPrefs.edit()
 
-            //Indicate that the default shared prefs have been set
-            ed.putBoolean("initialized", true)
-
-            //Set some default shared pref
-            ed.putBoolean("enableApp", true)
-            ed.putBoolean("enableLogs", true)
-            ed.putBoolean("disconnectPending", true)
-            ed.putLong("disconnectStamp", System.currentTimeMillis())
-            ed.putInt("disconnectTimerMin", 15)
-            ed.apply()
-
-            val rootUtil = RootUtil
-            if(!rootUtil.isDeviceRooted) alertNoRoot()
-
-        }
 
         // Get pref
         val boolAppEnabled = sharedPrefs.getBoolean("enableApp", false)
@@ -85,33 +74,29 @@ class MainActivity : AppCompatActivity() {
         swLogs.isChecked = boolLogsEnabled
         timerMinTextEdit.text = Editable.Factory.getInstance().newEditable(intTimerDisconnectMin.toString())
 
-        if(boolAppEnabled) startApp(applicationContext)
 
-
+        val mainLayout = findViewById<ConstraintLayout>(R.id.container)
+        mainLayout.setOnClickListener {
+            it.requestFocus()
+        }
 
         swAppEnable.setOnCheckedChangeListener { _, isChecked ->
             ed = sharedPrefs.edit()
             if (isChecked) {
                 startApp(applicationContext)
-                Log.d("main", "switch on")
                 ed.putBoolean("enableApp", true)
                 ed.putBoolean("enableLogs", true)
+                ed.putBoolean("disconnectPending", true)
                 swLogs.isEnabled = true
                 swLogs.isChecked = true
             } else {
-
-                if(DisconnectHelper.getConnectionType(applicationContext) ==  DisconnectHelper.CONNECTION_TYPE_MOBILE){
-                    WorkManager.getInstance(applicationContext).cancelAllWorkByTag("DisconnectWorker");
-                }else{
-                    DisconnectHelper.unregisterPIntent(applicationContext)
-                }
-
+                stopApp(applicationContext)
                 ed.putBoolean("enableApp", false)
                 ed.putBoolean("enableLogs", false)
                 swLogs.isEnabled = false
                 swLogs.isChecked = false
             }
-            ed.commit()
+            ed.apply()
         }
 
         swLogs.setOnCheckedChangeListener { _, isChecked ->
@@ -138,6 +123,12 @@ class MainActivity : AppCompatActivity() {
                     timerMinTextEdit.error = null
                     ed = sharedPrefs.edit()
                     ed.putInt("disconnectTimerMin", sInInt)
+                    if (sharedPrefs.getBoolean("enableApp", false)) {
+                        ed.putBoolean("disconnectPending", false)
+                        Toast.makeText(applicationContext, "Timer Reset", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(applicationContext, "Timer Set", Toast.LENGTH_SHORT).show()
+                    }
                     ed.apply()
                 }
 
@@ -160,14 +151,45 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
+        timerMinTextEdit.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            }
+        }
 
     }
 
+   @RequiresApi(Build.VERSION_CODES.M)
    override fun onCreate(savedInstanceState: Bundle?) {
        super.onCreate(savedInstanceState)
 
        setContentView(R.layout.activity_main)
+       val sharedPrefs = getSharedPreferences("app_settings", MODE_PRIVATE)
+       var ed: Editor
 
+       if (!sharedPrefs.contains("initialized")) {
+           ed = sharedPrefs.edit()
+
+           //Indicate that the default shared prefs have been set
+           ed.putBoolean("initialized", true)
+
+           //Set some default shared pref
+           ed.putBoolean("enableApp", true)
+           ed.putBoolean("enableLogs", true)
+           ed.putBoolean("disconnectPending", true)
+           ed.putLong("disconnectStamp", System.currentTimeMillis())
+           ed.putInt("disconnectTimerMin", 15)
+           ed.apply()
+
+           val rootUtil = RootUtil
+           if(!rootUtil.isDeviceRooted) alertNoRoot()
+
+       }
+
+
+       val boolAppEnabled = sharedPrefs.getBoolean("enableApp", false)
+       if(boolAppEnabled) startApp(applicationContext)
 
        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -189,9 +211,9 @@ class MainActivity : AppCompatActivity() {
 
         val alertDialog = AlertDialog.Builder(this).create()
         alertDialog.setTitle("Root Check")
-        alertDialog.setMessage("It seems you don't have a rooted device, this app needs root in order to disconnect data network.\n\nIn case your device is really rooted try pressing the button to grand root privileges")
+        alertDialog.setMessage("It seems you don't have a rooted device, this app needs root in order to disconnect data network.\n\nIn case your device is really rooted try pressing the button to grant root privileges.")
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { dialogInterface: DialogInterface, _ : Int ->
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { dialogInterface: DialogInterface, _: Int ->
             dialogInterface.dismiss()
         }
 
@@ -200,14 +222,29 @@ class MainActivity : AppCompatActivity() {
 
 companion object{
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    @RequiresApi(Build.VERSION_CODES.M)
     fun startApp(context: Context) {
-        if(DisconnectHelper.getConnectionType(context) == 1){
+        //Log.d("mobile on", DisconnectHelper.isMobileOnAllNetworks(context).toString())
+        if(DisconnectHelper.isMobileOnAllNetworks(context)){
             DisconnectHelper.registerDisconnectWorker(context)
         }else{
-            DisconnectHelper.registerPIntent(context)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                DisconnectHelper.registerPIntent(context)
+            }
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun stopApp(context: Context){
+        if(DisconnectHelper.isMobileOnAllNetworks(context)){
+            WorkManager.getInstance(context).cancelAllWorkByTag("DisconnectWorker")
+        }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                DisconnectHelper.unregisterPIntent(context)
+            }
+        }
+    }
+
 
 }
 

@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class BootStartReceiver : BroadcastReceiver() {
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceive(context: Context, intent: Intent) {
 
         val sharedPrefs = context.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)

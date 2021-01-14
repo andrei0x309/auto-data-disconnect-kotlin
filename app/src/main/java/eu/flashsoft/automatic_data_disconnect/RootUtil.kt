@@ -5,6 +5,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 
+@Suppress("SpellCheckingInspection")
 object RootUtil {
     val isDeviceRooted: Boolean
         get() = checkRootMethod1() || checkRootMethod2() || checkRootMethod3()

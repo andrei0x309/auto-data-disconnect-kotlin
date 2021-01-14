@@ -25,12 +25,9 @@ margin-left:10px;
             <h2>FAQ</h2>
             <ul>
             <li><p><b>Q:</b> Why the APP needs root?</p>
-              <p class="answer"><b>A:</b> On newer then <i>Android 5</i> data connection can't activated or deactivated without root privileges</p>
+              <p class="answer"><b>A:</b> On newer <i>Android</i> systems data connection can't activated or deactivated without root privileges</p>
             </li>
-                       <li><p><b>Q:</b> It will disconnect DATA when WiFi is running?</p>
-                            <p class="answer"><b>A:</b> No because when WiFi is running data is not in use, I may add a specific option for that in a future version.</p>
-                        </li>
-              
+
             <li><p><b>Q:</b> What time interval can be set to disconnect Data connection?</p>
               <p class="answer"><b>A:</b> Between 1 minute and 600 minutes</p>
             </li>
@@ -58,7 +55,7 @@ margin-left:10px;
                           <p class="answer"><b>A:</b> Yes. </p>
              </li>
              <li><p><b>Q:</b> On which device this app was tested?</p>
-                          <p class="answer"><b>A:</b> Mainly on AVD emulator(Pixel_XL_API_29).</p>
+                          <p class="answer"><b>A:</b> Mainly on AVD emulator(Pixel_XL_API_29, Pixel_API_21) and Phone with Android 7.</p>
              </li>
             
             </ul>

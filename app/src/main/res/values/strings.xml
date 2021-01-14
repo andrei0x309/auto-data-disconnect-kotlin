@@ -16,5 +16,6 @@
     <string name="minutes">minutes</string>
     <string name="grant_root_rights">Grant Root Rights</string>
     <string name="enable_app">Enable APP</string>
+    <string name="error_image">Error Image</string>
 
 </resources>

@@ -16,10 +16,10 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
 
     private fun disableMobileData() {
         try {
-            val cmds = arrayOf("svc data disable")
+            val commands = arrayOf("svc data disable")
             val p = Runtime.getRuntime().exec("su")
             val os = DataOutputStream(p.outputStream)
-            for (tmpCmd in cmds) {
+            for (tmpCmd in commands) {
                 os.writeBytes(
                         """
     $tmpCmd
@@ -61,9 +61,9 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
     override fun doWork(): Result {
 
 
-        val isMobile = DisconnectHelper.getConnectionType(applicationContext)  ==  DisconnectHelper.CONNECTION_TYPE_MOBILE
+        val isMobile = DisconnectHelper.isMobileOnAllNetworks(applicationContext)
         val sharedPrefs = applicationContext.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
-
+        //Log.d("--- test", "mobile? $isMobile")
 
         var disableSuccess = false
 
@@ -80,12 +80,13 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
 
 
             if(disPending && (curTime  >= disTime) ){
+                //Log.d("-- Can I reach here", "yes")
                 val ed = sharedPrefs.edit()
                 ed.putBoolean("disconnectPending", false)
                 ed.apply()
                 disableMobileData()
                 Thread.sleep(1500)
-                disableSuccess = (DisconnectHelper.getConnectionType(applicationContext)  !=  DisconnectHelper.CONNECTION_TYPE_MOBILE)
+                disableSuccess = !DisconnectHelper.isMobileOnAllNetworks(applicationContext)
                 val logOn = sharedPrefs.getBoolean("enableLogs", false)
                 if (logOn) writeLogLine(disableSuccess)
             }
