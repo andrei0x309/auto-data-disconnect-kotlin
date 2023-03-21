@@ -26,16 +26,16 @@ companion object{
         {
             result = if ( Build.VERSION.SDK_INT  >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 //Settings comes from the namespace Android.Provider
-                Settings.Global.getInt(context.contentResolver, "mobile_data", 1) == 1;
+                Settings.Global.getInt(context.contentResolver, "mobile_data", 1) == 1
             } else {
-                Settings.Secure.getInt(context.contentResolver, "mobile_data", 1) == 1;
+                Settings.Secure.getInt(context.contentResolver, "mobile_data", 1) == 1
             }
         }
         catch (ex: Exception)
         {
             ex.printStackTrace()
         }
-        return result;
+        return result
     }
 
 

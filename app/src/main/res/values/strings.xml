@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Automatic Data Disconnect</string>
+    <string name="app_name">Auto Data Disconnect</string>
     <string name="title_home">Control</string>
     <string name="title_dashboard">Logs</string>
     <string name="title_notifications">About</string>

@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
-        timerMinTextEdit.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
+        timerMinTextEdit.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
 
        setContentView(R.layout.activity_main)
        val sharedPrefs = getSharedPreferences("app_settings", MODE_PRIVATE)
-       var ed: Editor
+       val ed: Editor
 
        if (!sharedPrefs.contains("initialized")) {
            ed = sharedPrefs.edit()

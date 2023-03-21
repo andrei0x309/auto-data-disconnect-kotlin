@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "Automatic Data Deconnect"
+rootProject.name = "Auto Data Deconnect"
