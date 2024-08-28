@@ -35,26 +35,25 @@ class MainActivity : AppCompatActivity() {
     //On Create
 
     // Home Fragment
-    lateinit var swAppEnable:SwitchCompat
+    lateinit var swAppEnable: SwitchCompat
     lateinit var swLogs: SwitchCompat
-    lateinit var timerMinTextEdit:EditText
+    lateinit var timerMinTextEdit: EditText
     lateinit var grantRootBtn: Button
 
 
-
-
     @RequiresApi(Build.VERSION_CODES.M)
-    fun homeFragmentLoaded(){
+    fun homeFragmentLoaded() {
 
 
         grantRootBtn.setOnClickListener {
 
-            try{
+            try {
                 Runtime.getRuntime().exec("su")
                 Toast.makeText(applicationContext, "Root rights received", Toast.LENGTH_LONG).show()
-            }catch (e: IOException){
+            } catch (e: IOException) {
                 e.printStackTrace()
-                Toast.makeText(applicationContext, "Root rights not received", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Root rights not received", Toast.LENGTH_LONG)
+                    .show()
             }
 
         }
@@ -72,7 +71,8 @@ class MainActivity : AppCompatActivity() {
         // Set View comp
         swAppEnable.isChecked = boolAppEnabled
         swLogs.isChecked = boolLogsEnabled
-        timerMinTextEdit.text = Editable.Factory.getInstance().newEditable(intTimerDisconnectMin.toString())
+        timerMinTextEdit.text =
+            Editable.Factory.getInstance().newEditable(intTimerDisconnectMin.toString())
 
 
         val mainLayout = findViewById<ConstraintLayout>(R.id.container)
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             ed = sharedPrefs.edit()
             if (isChecked) {
                 ed.putBoolean("enableLogs", true)
-            }else{
+            } else {
                 ed.putBoolean("enableLogs", false)
             }
             ed.commit()
@@ -134,12 +134,16 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
             }
 
         })
@@ -153,58 +157,63 @@ class MainActivity : AppCompatActivity() {
 
         timerMinTextEdit.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm: InputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             }
         }
 
     }
 
-   @RequiresApi(Build.VERSION_CODES.M)
-   override fun onCreate(savedInstanceState: Bundle?) {
-       super.onCreate(savedInstanceState)
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-       setContentView(R.layout.activity_main)
-       val sharedPrefs = getSharedPreferences("app_settings", MODE_PRIVATE)
-       val ed: Editor
+        setContentView(R.layout.activity_main)
+        val sharedPrefs = getSharedPreferences("app_settings", MODE_PRIVATE)
+        val ed: Editor
 
-       if (!sharedPrefs.contains("initialized")) {
-           ed = sharedPrefs.edit()
+        if (!sharedPrefs.contains("initialized")) {
+            ed = sharedPrefs.edit()
 
-           //Indicate that the default shared prefs have been set
-           ed.putBoolean("initialized", true)
+            //Indicate that the default shared prefs have been set
+            ed.putBoolean("initialized", true)
 
-           //Set some default shared pref
-           ed.putBoolean("enableApp", true)
-           ed.putBoolean("enableLogs", true)
-           ed.putBoolean("disconnectPending", true)
-           ed.putLong("disconnectStamp", System.currentTimeMillis())
-           ed.putInt("disconnectTimerMin", 15)
-           ed.apply()
+            //Set some default shared pref
+            ed.putBoolean("enableApp", true)
+            ed.putBoolean("enableLogs", true)
+            ed.putBoolean("disconnectPending", true)
+            ed.putLong("disconnectStamp", System.currentTimeMillis())
+            ed.putInt("disconnectTimerMin", 15)
+            ed.apply()
 
-           val rootUtil = RootUtil
-           if(!rootUtil.isDeviceRooted) alertNoRoot()
+            val rootUtil = RootUtil
+            if (!rootUtil.isDeviceRooted) alertNoRoot()
 
-       }
-
-
-       val boolAppEnabled = sharedPrefs.getBoolean("enableApp", false)
-       if(boolAppEnabled) startApp(applicationContext)
-
-       val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        }
 
 
-       val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-       val navController: NavController = navHostFragment.navController
+        val boolAppEnabled = sharedPrefs.getBoolean("enableApp", false)
+        if (boolAppEnabled) startApp(applicationContext)
 
-       // Passing each menu ID as a set of Ids because each
-       // menu should be considered as top level destinations.
-       val appBarConfiguration = AppBarConfiguration(setOf(
-               R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
-       setupActionBarWithNavController(navController, appBarConfiguration)
-       navView.setupWithNavController(navController)
+        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-   }
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController: NavController = navHostFragment.navController
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
+    }
 
 
     private fun alertNoRoot() {
@@ -213,40 +222,43 @@ class MainActivity : AppCompatActivity() {
         alertDialog.setTitle("Root Check")
         alertDialog.setMessage("It seems you don't have a rooted device, this app needs root in order to disconnect data network.\n\nIn case your device is really rooted try pressing the button to grant root privileges.")
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { dialogInterface: DialogInterface, _: Int ->
+        alertDialog.setButton(
+            AlertDialog.BUTTON_POSITIVE,
+            "OK"
+        ) { dialogInterface: DialogInterface, _: Int ->
             dialogInterface.dismiss()
         }
 
         alertDialog.show()
     }
 
-companion object{
+    companion object {
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun startApp(context: Context) {
-        //Log.d("mobile on", DisconnectHelper.isMobileOnAllNetworks(context).toString())
-        if(DisconnectHelper.isMobileOnAllNetworks(context)){
-            DisconnectHelper.registerDisconnectWorker(context)
-        }else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                DisconnectHelper.registerPIntent(context)
+        @RequiresApi(Build.VERSION_CODES.M)
+        fun startApp(context: Context) {
+            //Log.d("mobile on", DisconnectHelper.isMobileOnAllNetworks(context).toString())
+            if (DisconnectHelper.isMobileOnAllNetworks(context)) {
+                DisconnectHelper.registerDisconnectWorker(context)
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    DisconnectHelper.registerPIntent(context)
+                }
             }
         }
-    }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun stopApp(context: Context){
-        if(DisconnectHelper.isMobileOnAllNetworks(context)){
-            WorkManager.getInstance(context).cancelAllWorkByTag("DisconnectWorker")
-        }else{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                DisconnectHelper.unregisterPIntent(context)
+        @RequiresApi(Build.VERSION_CODES.M)
+        fun stopApp(context: Context) {
+            if (DisconnectHelper.isMobileOnAllNetworks(context)) {
+                WorkManager.getInstance(context).cancelAllWorkByTag("DisconnectWorker")
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    DisconnectHelper.unregisterPIntent(context)
+                }
             }
         }
+
+
     }
-
-
-}
 
 
 }

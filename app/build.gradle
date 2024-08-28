@@ -4,12 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+
 
     defaultConfig {
         applicationId "eu.flashsoft.automatic_data_disconnect"
-        minSdkVersion 19
-        targetSdkVersion 33
+        minSdkVersion 21
+        compileSdk 34
+        targetSdkVersion 34
         versionCode 3
         versionName '1.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,26 +36,26 @@ android {
 dependencies {
     //def work_version = ""
     // Kotlin + coroutines
-    implementation "androidx.work:work-runtime-ktx:2.8.0"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.0'
+    implementation "androidx.work:work-runtime-ktx:2.9.1"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.4'
 
     //noinspection GradleDependency
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
 
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.12.0'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.2.0'
 
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.4'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4'
 
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
 
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //testImplementation 'junit:junit:4.+'
     //noinspection GradleDependency

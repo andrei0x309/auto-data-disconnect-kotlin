@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
-        Worker(appContext, workerParams) {
+class DisconnectWorker(appContext: Context, workerParams: WorkerParameters) :
+    Worker(appContext, workerParams) {
 
     private fun disableMobileData() {
         try {
@@ -21,7 +21,7 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
             val os = DataOutputStream(p.outputStream)
             for (tmpCmd in commands) {
                 os.writeBytes(
-                        """
+                    """
     $tmpCmd
     
     """.trimIndent()
@@ -34,20 +34,22 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
         }
     }
 
-    private fun writeLogLine(success: Boolean){
-        val currentDate: String = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+    private fun writeLogLine(success: Boolean) {
+        val currentDate: String =
+            SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(Date())
         val filename = "logs.txt"
-        val logLine = if(success) "<font color='#114444'>[ $currentDate ]</font> DATA was disconnected\n<br>" else "<font color='#114444'>[ $currentDate ]</font> Failed to disconnect DATA - missing root rights\n<br>"
+        val logLine =
+            if (success) "<font color='#114444'>[ $currentDate ]</font> DATA was disconnected\n<br>" else "<font color='#114444'>[ $currentDate ]</font> Failed to disconnect DATA - missing root rights\n<br>"
         applicationContext.openFileOutput(filename, Context.MODE_APPEND).use {
             it.write(logLine.toByteArray())
         }
     }
 
-    private fun restartDisconnect(sharedPrefs: SharedPreferences){
+    private fun restartDisconnect(sharedPrefs: SharedPreferences) {
         val ed = sharedPrefs.edit()
         ed.putBoolean("disconnectPending", true)
         val minSettings = sharedPrefs.getInt("disconnectTimerMin", 15)
-        val offTime = System.currentTimeMillis() + (minSettings *60000)
+        val offTime = System.currentTimeMillis() + (minSettings * 60000)
         ed.putLong("disconnectStamp", offTime)
         ed.putBoolean("disconnectPending", true)
         WorkManager.getInstance(applicationContext).cancelAllWorkByTag("DisconnectWorker")
@@ -55,31 +57,30 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
     }
 
 
-
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun doWork(): Result {
 
 
         val isMobile = DisconnectHelper.isMobileOnAllNetworks(applicationContext)
-        val sharedPrefs = applicationContext.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
+        val sharedPrefs =
+            applicationContext.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
         //Log.d("--- test", "mobile? $isMobile")
 
         var disableSuccess = false
 
-        if(isMobile){
+        if (isMobile) {
 
 
             val curTime = System.currentTimeMillis()
             val disTime = sharedPrefs.getLong("disconnectStamp", curTime)
             val disPending = sharedPrefs.getBoolean("disconnectPending", false)
 
-            if(!disPending) {
+            if (!disPending) {
                 restartDisconnect(sharedPrefs)
             }
 
 
-            if(disPending && (curTime  >= disTime) ){
+            if (disPending && (curTime >= disTime)) {
                 //Log.d("-- Can I reach here", "yes")
                 val ed = sharedPrefs.edit()
                 ed.putBoolean("disconnectPending", false)
@@ -91,23 +92,23 @@ class DisconnectWorker(appContext: Context, workerParams: WorkerParameters):
                 if (logOn) writeLogLine(disableSuccess)
             }
 
-            if(disableSuccess){
+            if (disableSuccess) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     DisconnectHelper.registerPIntent(applicationContext)
                 }
 
-            }else{
+            } else {
                 DisconnectHelper.registerDisconnectWorker(applicationContext)
             }
 
 
-        }else{
+        } else {
             val ed = sharedPrefs.edit()
             ed.putBoolean("disconnectPending", false)
             ed.apply()
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 DisconnectHelper.registerPIntent(applicationContext)
             }
 

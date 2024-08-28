@@ -17,67 +17,64 @@ import java.util.concurrent.TimeUnit
 class DisconnectHelper {
 
 
+    companion object {
 
-companion object{
-
-    fun isMobileOnAllNetworks(context: Context): Boolean {
-        var result = false;
-        try
-        {
-            result = if ( Build.VERSION.SDK_INT  >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                //Settings comes from the namespace Android.Provider
-                Settings.Global.getInt(context.contentResolver, "mobile_data", 1) == 1
-            } else {
-                Settings.Secure.getInt(context.contentResolver, "mobile_data", 1) == 1
+        fun isMobileOnAllNetworks(context: Context): Boolean {
+            var result = false;
+            try {
+                result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    //Settings comes from the namespace Android.Provider
+                    Settings.Global.getInt(context.contentResolver, "mobile_data", 1) == 1
+                } else {
+                    Settings.Secure.getInt(context.contentResolver, "mobile_data", 1) == 1
+                }
+            } catch (ex: Exception) {
+                ex.printStackTrace()
             }
+            return result
         }
-        catch (ex: Exception)
-        {
-            ex.printStackTrace()
-        }
-        return result
-    }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun registerPIntent(context: Context){
-        val nR = NetworkRequest.Builder()
+        @RequiresApi(Build.VERSION_CODES.M)
+        fun registerPIntent(context: Context) {
+            val nR = NetworkRequest.Builder()
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
                 .build()
 
-        val intent = Intent(context, DataConnReceiver::class.java)
-        val networkPendingIntent = PendingIntent.getBroadcast(
-                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val intent = Intent(context, DataConnReceiver::class.java)
+            val networkPendingIntent = PendingIntent.getBroadcast(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        cm.registerNetworkCallback(nR, networkPendingIntent)
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            cm.registerNetworkCallback(nR, networkPendingIntent)
 
-    }
+        }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    fun unregisterPIntent(context: Context){
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+        fun unregisterPIntent(context: Context) {
 
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        val intent = Intent(context, DataConnReceiver::class.java)
-        val networkPendingIntent = PendingIntent.getBroadcast(
-                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+            val intent = Intent(context, DataConnReceiver::class.java)
+            val networkPendingIntent = PendingIntent.getBroadcast(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
             cm?.releaseNetworkRequest(networkPendingIntent)
-    }
+        }
 
 
-    fun registerDisconnectWorker(context: Context) {
-        val uploadWorkRequest = OneTimeWorkRequestBuilder<DisconnectWorker>()
+        fun registerDisconnectWorker(context: Context) {
+            val uploadWorkRequest = OneTimeWorkRequestBuilder<DisconnectWorker>()
                 .setInitialDelay(23, TimeUnit.SECONDS)
                 .addTag("DisconnectWorker")
                 // Additional configuration
                 .build()
-        WorkManager.getInstance(context)
+            WorkManager.getInstance(context)
                 .enqueue(uploadWorkRequest)
+        }
+
     }
-
-}
-
 
 
 }

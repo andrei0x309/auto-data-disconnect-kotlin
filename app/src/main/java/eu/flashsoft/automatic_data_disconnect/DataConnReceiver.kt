@@ -14,7 +14,7 @@ class DataConnReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onReceive(context: Context, intent: Intent) {
 
-        if(DisconnectHelper.isMobileOnAllNetworks(context)) {
+        if (DisconnectHelper.isMobileOnAllNetworks(context)) {
             DisconnectHelper.registerDisconnectWorker(context)
         }
 

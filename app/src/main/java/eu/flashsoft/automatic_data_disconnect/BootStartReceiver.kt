@@ -11,9 +11,10 @@ class BootStartReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceive(context: Context, intent: Intent) {
 
-        val sharedPrefs = context.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
+        val sharedPrefs =
+            context.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
         val boolAppEnabled = sharedPrefs.getBoolean("enableApp", false)
-        if(boolAppEnabled) MainActivity.startApp(context)
+        if (boolAppEnabled) MainActivity.startApp(context)
 
     }
 }
