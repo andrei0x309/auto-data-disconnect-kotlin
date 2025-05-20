@@ -8,122 +8,198 @@
     android:focusable="true"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/appSwitch"
-        android:layout_width="180dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/enable_app"
-        android:textAlignment="textEnd"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@id/whyRootTxt"
-        tools:checked="true" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/logsSwitch"
-        android:layout_width="180dp"
-        android:layout_height="33dp"
-        android:text="@string/enable_logs"
-        android:textAlignment="textEnd"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/appSwitch"
-        tools:checked="true" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="730dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="311dp"
-        android:layout_height="38dp"
-        android:text="@string/disconnect_data_connection"
-        android:layout_marginTop="40dp"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/logsSwitch" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/enableNotificationSwitch"
+                android:layout_width="234dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="292dp"
+                android:text="@string/enable_notification_a13"
+                android:textAlignment="textEnd"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/wifiSwitch"
+                tools:checked="true" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="77dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/after"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/wifiSwitch"
+                android:layout_width="225dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/disconnect_wifi"
+                android:textAlignment="textEnd"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.376"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/appSwitch"
+                tools:checked="true" />
 
-    <EditText
-        android:id="@+id/timerMinTextEdit"
-        android:layout_width="91dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:hint="@string/minutes"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:imeOptions="actionDone" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="77dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:text="Status:"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/timerMinTextEdit" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="90dp"
-        android:layout_height="32dp"
-        android:text="@string/minutes"
-        android:textSize="24sp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/appSwitch"
+                android:layout_width="228dp"
+                android:layout_height="51dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/enable_app"
+                android:textAlignment="textEnd"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.359"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/whyRootTxt"
+                tools:checked="true" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.02" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/logsSwitch"
+                android:layout_width="234dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/enable_logs"
+                android:textAlignment="textEnd"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.364"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/wifiSwitch"
+                tools:checked="true" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="311dp"
+                android:layout_height="38dp"
+                android:text="@string/disconnect_data_connection"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.352"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/logsSwitch" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="79dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/after"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/timerMinTextEdit"
+                app:layout_constraintHorizontal_bias="0.865"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/grantRootBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/grant_root_rights"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+            <EditText
+                android:id="@+id/timerMinTextEdit"
+                android:layout_width="91dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:ems="10"
+                android:hint="@string/minutes"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <TextView
-        android:id="@+id/whyRootTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_why_root"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/appSwitch"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@id/grantRootBtn"
-        />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="98dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:text="@string/minutes"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <Button
+                android:id="@+id/grantRootBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/grant_root_rights"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.544"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.02" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <TextView
+                android:id="@+id/whyRootTxt"
+                android:layout_width="308dp"
+                android:layout_height="58dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/text_why_root"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.534"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/grantRootBtn"
+                app:lineHeight="18dp" />
+
+            <TextView
+                android:id="@+id/textViewCounter"
+                android:layout_width="114dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="72dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+            <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="121dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewCounter"
+                app:layout_constraintHorizontal_bias="0.854"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Auto Data Disconnect</string>
+    <string name="app_name">Network Auto Disconnect</string>
     <string name="title_home">Control</string>
     <string name="title_dashboard">Logs</string>
     <string name="title_notifications">About</string>
@@ -9,13 +9,20 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="btn_clear_logs">Clear Logs</string>
-    <string name="text_why_root">On Android > 4\nData can\'t be disconnected without root\nCheck More on About Tab</string>
+    <string name="text_why_root">On non-legacy Android > 4 (Ice Cream Sandwich)\nData can\'t be disconnected without root\nCheck More on About Tab</string>
     <string name="enable_logs">Enable Logs</string>
     <string name="disconnect_data_connection">Disconnect Data Connection</string>
     <string name="after">After:</string>
     <string name="minutes">minutes</string>
     <string name="grant_root_rights">Grant Root Rights</string>
     <string name="enable_app">Enable APP</string>
+    <string name="disconnect_wifi">Disconnect WIFI also</string>
     <string name="error_image">Error Image</string>
+    <string name="status_on">Data will disconnect in:</string>
+    <string name="status_networks_on">Networks will disconnect in:</string>
+    <string name="status_off">Data connection is off.</string>
+    <string name="status_networks_off">Networks are off.</string>
+    <string name="service_off">Service was stopped.</string>
+    <string name="enable_notification_a13">Enable Service Notifications A13+</string>"
 
 </resources>

@@ -1,117 +1,90 @@
 package eu.flashsoft.automatic_data_disconnect
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.*
+import androidx.core.content.edit
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import java.io.DataOutputStream
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
+
+enum class LogMode(val value: Int) {
+    DATA_ONLY(1),
+    ALSO_WIFI(2)
+}
 
 class DisconnectWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
-    private fun disableMobileData() {
+    private fun disableMobileData(wifiAlso : Boolean = false) {
         try {
-            val commands = arrayOf("svc data disable")
+            val commands = arrayOf("svc data disable", "svc wifi disable")
+
+            for (cmd in commands) {
+            var command = arrayOf(cmd)
+            if (!wifiAlso && command[0] == "svc wifi disable") continue
             val p = Runtime.getRuntime().exec("su")
             val os = DataOutputStream(p.outputStream)
-            for (tmpCmd in commands) {
-                os.writeBytes(
-                    """
-    $tmpCmd
-    
-    """.trimIndent()
-                )
+
+                for (commandText in command) {
+                    os.writeBytes(
+                        """
+                $commandText
+                    \n
+                    """.trimIndent()
+                    )
+                }
+                os.writeBytes("exit\n")
+                os.flush()
             }
-            os.writeBytes("exit\n")
-            os.flush()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun writeLogLine(success: Boolean) {
+    private fun writeLogLine(success: Boolean, mode: LogMode = LogMode.DATA_ONLY) {
         val currentDate: String =
             SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(Date())
         val filename = "logs.txt"
+
+        val whatDisconnected = if(mode == LogMode.DATA_ONLY) "DATA" else "DATA and WIFI"
+
         val logLine =
-            if (success) "<font color='#114444'>[ $currentDate ]</font> DATA was disconnected\n<br>" else "<font color='#114444'>[ $currentDate ]</font> Failed to disconnect DATA - missing root rights\n<br>"
+            if (success) "<font color='#114444'>[ $currentDate ]</font> $whatDisconnected was disconnected\n<br>" else "<font color='#114444'>[ $currentDate ]</font> Failed to disconnect DATA - missing root rights\n<br>"
         applicationContext.openFileOutput(filename, Context.MODE_APPEND).use {
             it.write(logLine.toByteArray())
         }
     }
 
-    private fun restartDisconnect(sharedPrefs: SharedPreferences) {
-        val ed = sharedPrefs.edit()
-        ed.putBoolean("disconnectPending", true)
-        val minSettings = sharedPrefs.getInt("disconnectTimerMin", 15)
-        val offTime = System.currentTimeMillis() + (minSettings * 60000)
-        ed.putLong("disconnectStamp", offTime)
-        ed.putBoolean("disconnectPending", true)
-        WorkManager.getInstance(applicationContext).cancelAllWorkByTag("DisconnectWorker")
-        ed.apply()
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun doWork(): Result {
-
-
-        val isMobile = DisconnectHelper.isMobileOnAllNetworks(applicationContext)
         val sharedPrefs =
-            applicationContext.getSharedPreferences("app_settings", AppCompatActivity.MODE_PRIVATE)
-        //Log.d("--- test", "mobile? $isMobile")
+            applicationContext.getSharedPreferences(
+                AppConstants.PREFS_NAME,
+                AppCompatActivity.MODE_PRIVATE
+            )
 
-        var disableSuccess = false
+        val logOn = sharedPrefs.getBoolean(AppConstants.IS_LOGS_ENABLED_KEY, false)
+        val isWifiDisconnectEnabled = sharedPrefs.getBoolean(AppConstants.IS_WIFI_DISCONNECT_ENABLED_KEY, false)
+        Log.d(AppConstants.WORKER_DISCONNECT_TAG, "Disconnect Worker: doWork, also WIFI: $isWifiDisconnectEnabled")
 
-        if (isMobile) {
+        disableMobileData(isWifiDisconnectEnabled)
+        Thread.sleep(1500)
+        val disableSuccess = !WorkerHelper.isMobileOnAllNetworks(applicationContext)
+        if (logOn) writeLogLine(disableSuccess, if(isWifiDisconnectEnabled) LogMode.ALSO_WIFI else LogMode.DATA_ONLY)
 
 
-            val curTime = System.currentTimeMillis()
-            val disTime = sharedPrefs.getLong("disconnectStamp", curTime)
-            val disPending = sharedPrefs.getBoolean("disconnectPending", false)
+        if (disableSuccess) {
 
-            if (!disPending) {
-                restartDisconnect(sharedPrefs)
+            sharedPrefs.edit {
+                putBoolean(AppConstants.NETWORK_STATUS_KEY, false)
             }
-
-
-            if (disPending && (curTime >= disTime)) {
-                //Log.d("-- Can I reach here", "yes")
-                val ed = sharedPrefs.edit()
-                ed.putBoolean("disconnectPending", false)
-                ed.apply()
-                disableMobileData()
-                Thread.sleep(1500)
-                disableSuccess = !DisconnectHelper.isMobileOnAllNetworks(applicationContext)
-                val logOn = sharedPrefs.getBoolean("enableLogs", false)
-                if (logOn) writeLogLine(disableSuccess)
-            }
-
-            if (disableSuccess) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    DisconnectHelper.registerPIntent(applicationContext)
-                }
-
-            } else {
-                DisconnectHelper.registerDisconnectWorker(applicationContext)
-            }
-
 
         } else {
-            val ed = sharedPrefs.edit()
-            ed.putBoolean("disconnectPending", false)
-            ed.apply()
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                DisconnectHelper.registerPIntent(applicationContext)
-            }
-
+            WorkerHelper.registerDisconnectWorker(applicationContext)
         }
 
 
